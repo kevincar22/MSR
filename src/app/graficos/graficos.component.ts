@@ -46,7 +46,6 @@ export class GraficosComponent {
       plotOptions: {
         bar: {
           horizontal: true,
-          barHeight: '50%'
         }
       }
     
@@ -61,18 +60,23 @@ export class GraficosComponent {
       let dias:any = []
       res = res.properties.parameter.ALLSKY_SFC_SW_DIRH
       let valores = Object.values(res)
+      let fechas = Object.keys(res)
       let continuar = true
       let i = 0
       while(continuar){
         
         let sub = valores.slice(i,i+7)
+        let subFechas = fechas.slice(i,i+7)
         
         let acumulador = 0
         for(let valor of sub){
           acumulador += Number(valor)
         }
         acumulador /= 7
+        acumulador = Number(acumulador.toFixed(2))
         this.semanas.push(acumulador)
+        dias.push(this.getFechas(subFechas[0],subFechas[subFechas.length-1]))
+
         i+=7
         if(i>valores.length){
           continuar = false
@@ -94,7 +98,20 @@ export class GraficosComponent {
           data: this.semanas
         }
       ]
+      this.chartOptions.xaxis={
+        categories: dias
+      }
     })
+  }
+
+  getFechas(inicio:string,fin:string){
+    let añoI = inicio.substr(0,4)
+    let mesI = inicio.substr(4,2)
+    let diaI = inicio.substr(6)
+    let añoF = fin.substr(0,4)
+    let mesF = fin.substr(4,2)
+    let diaF = fin.substr(6)
+    return añoI + "/" + mesI + "/" + diaI + "-" + añoF + "/" + mesF + "/" + diaF
   }
 
 }
