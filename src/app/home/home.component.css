@@ -1,0 +1,22 @@
+section.conteiner{
+padding-top: 2rem;
+padding-bottom: 2rem;
+background-image: url(../../assets/images/sun.jpg);
+}
+#main-logo img {
+    width: 10rem;
+}
+
+div {
+    text-align: justify;
+    margin: 2rem;
+}
+
+h4 {
+    color: #ced4da;}
+
+h1 {
+    color: #f8f9fa;
+}
+a{color:#F51D26
+}
