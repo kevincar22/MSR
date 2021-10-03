@@ -6,7 +6,9 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "preinstall": "npm install -g @angular/cli @angular/compiler-cli typescript",
+    "postinstall": "ng build --prod"
   },
   "private": true,
   "dependencies": {
@@ -18,10 +20,12 @@
     "@angular/platform-browser": "~12.2.0",
     "@angular/platform-browser-dynamic": "~12.2.0",
     "@angular/router": "~12.2.0",
-    "bootstrap": "^5.0.0-beta3",
     "apexcharts": "^3.28.3",
+    "bootstrap": "^5.0.0-beta3",
+    "express": "^4.17.1",
     "fetch-with-proxy": "^3.0.1",
     "ng-apexcharts": "^1.5.12",
+    "path": "^0.12.7",
     "rxjs": "~6.6.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
@@ -39,5 +43,9 @@
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "~1.7.0",
     "typescript": "~4.3.5"
+  },
+  "engines": {
+    "node": "14.17.3",
+    "npm": "7.24.1"
   }
 }

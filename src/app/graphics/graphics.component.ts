@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
+
 import {
   ChartComponent,
   ApexAxisChartSeries,
@@ -23,7 +24,11 @@ export type ChartOptions = {
 })
 export class GraphicsComponent {
 
-  semanas: any = []
+  //valores2: any = []
+  dias2: any=[]
+  //alphas:string[]; 
+  semanas: any=[]
+  semanasN: number[];
   period: string | null
   year = new Date().getFullYear() - 1
   lat: string = "-2.1482271";
@@ -37,6 +42,21 @@ export class GraphicsComponent {
     } else if (this.period == "monthly") {
       this.graficoMensual(this.lat, this.lon)
     }
+  }
+
+  showSort(){
+    console.log("SEmanas Sort",this.semanasN)
+    console.log("Dias Sort",this.dias2)
+    this.chartOptions.series = [
+      {
+        name: "Irradiance Average",
+        data: this.semanasN
+      }
+    ]
+    this.chartOptions.xaxis = {
+      categories: this.dias2
+    }
+    
   }
 
   public chartOptions: Partial<any>;
@@ -85,8 +105,9 @@ export class GraphicsComponent {
       .then(res => {
         let dias: any = []
         res = res.properties.parameter.ALLSKY_SFC_SW_DIRH
-        let valores = Object.values(res)
+        let valores = Object.values(res)        
         let fechas = Object.keys(res)
+        
         let continuar = true
         let i = 0
         while (true) {
@@ -114,14 +135,36 @@ export class GraphicsComponent {
           i += 7
 
         }
-        dias[51] = this.getFechas("20201223", "20201231"),
-        console.log(dias)
-        console.log(this.semanas)
-        console.log(dias[this.semanas.indexOf(3.31)])
+
+               
+        dias[51] = this.getFechas("20201223", "20201231")
+        
+
+        //
+        let valores2 = Object.assign([], this.semanas);
+        let semanasOr = Object.assign([], this.semanas);
+        this.semanasN = this.semanas.map(function (x: string) { 
+          return parseFloat(x); 
+        });
+        
+        this.semanasN.sort(function(a, b) {
+          return a - b;
+        });       
+        this.semanasN.reverse();
+        this.dias2 = [];
+
+        for(let i of this.semanasN){          
+          let pos_max = valores2.indexOf(i);          
+          this.dias2.push(dias[pos_max]);
+          valores2[pos_max]=-2;
+        }
+
+        console.log("Fechas: ",dias)
+        console.log("VALORES: ",semanasOr)
         this.chartOptions.series = [
           {
             name: "Irradiance Average",
-            data: this.semanas
+            data: semanasOr
           }
         ]
         this.chartOptions.xaxis = {

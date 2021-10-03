@@ -27,7 +27,7 @@
 
 
 <div style="text-align:center">
-    <button type="button" class="btn sort">Sort</button>
+    <button (click) ="showSort()" type="button" class="btn sort" >Sort</button>
     <apx-chart [fill]="chartOptions.fill" [series]="chartOptions.series" [chart]="chartOptions.chart"
         [xaxis]="chartOptions.xaxis" [title]="chartOptions.title" [plotOptions]="chartOptions.plotOptions"></apx-chart>
 </div>
