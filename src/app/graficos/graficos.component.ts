@@ -63,11 +63,19 @@ export class GraficosComponent {
       let fechas = Object.keys(res)
       let continuar = true
       let i = 0
-      while(continuar){
+      while(true){
         
         let sub = valores.slice(i,i+7)
         let subFechas = fechas.slice(i,i+7)
         
+        if(i==364){
+          for(let valor of sub){
+            this.semanas[51] += (Number(valor)/7)
+          }
+          this.semanas[51]= Number(this.semanas[51].toFixed(2))
+          break
+        }
+
         let acumulador = 0
         for(let valor of sub){
           acumulador += Number(valor)
@@ -78,11 +86,10 @@ export class GraficosComponent {
         dias.push(this.getFechas(subFechas[0],subFechas[subFechas.length-1]))
 
         i+=7
-        if(i>valores.length){
-          continuar = false
-        }
+        
       }
       console.log(this.semanas)
+      dias[51] = this.getFechas("20201223","20201231")
       /*
       for(let dato in res){
         console.log(dato)
