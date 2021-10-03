@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-//import { createDecipheriv } from 'crypto';
+import { ActivatedRoute } from '@angular/router';
 
 import {
   ChartComponent,
@@ -23,133 +23,153 @@ export type ChartOptions = {
 })
 export class GraphicsComponent {
 
-  semanas:any = []
+  semanas: any = []
+  period: string | null
+  year = new Date().getFullYear() - 1
 
   public chartOptions: Partial<any>;
 
-  constructor(){
-    this.chartOptions={
-      
+  constructor(private route: ActivatedRoute) {
+    this.route.paramMap
+      .subscribe(params => {
+        console.log(params)
+        this.period = params.get('tipo')
+        if (params.get('tipo') == "weekly") {
+          this.graficoSemana()
+        } else if (params.get('tipo') == "monthly") {
+          this.graficoMensual()
+        }
+      })
+  }
+
+  graficoSemana() {
+    this.semanas = []
+    this.chartOptions = {
+      fill: {
+        colors: ['#07173F']
+      },
       series: [
         {
-          name: "My-series",
+          name: "Irradiance Average",
           data: []
         }
       ],
-      
       chart: {
         height: 3500,
-        type: "bar"
-      },
-      title: {
-        text: "My First Angular Chart"
+        type: "bar",
+        foreColor: '#03045e'
       },
       plotOptions: {
         bar: {
           horizontal: true,
         }
       }
-    
-      
     }
-  
-    
-        
-    var posis: number[] = [];
-    function success(pos: GeolocationPosition) {
-      var crd = pos.coords;
-      posis.push(crd.latitude)
-      posis.push(crd.longitude)
-      console.log('Your current position is:');
-      console.log('Latitude : ' + crd.latitude);
-      console.log('Longitude: ' + crd.longitude);
-      console.log('More or less ' + crd.accuracy + ' meters.');
 
-      
-    };    
-    
-    navigator.geolocation.getCurrentPosition(success);
-    console.log(posis);
-
-    if (navigator.geolocation) {
-      //let longi = posis.pop();
-      //let lati = posis.pop();
-      console.log(posis);
-      console.log(crd);
-      
-      
-      
-      let peti = "https://cors-anywhere.herokuapp.com/"+"https://power.larc.nasa.gov/api/temporal/daily/point?start=20200101&end=20201231&latitude="+posis[0].toString() +"&longitude="+posis[1].toString()+"&community=ag&parameters=ALLSKY_SFC_SW_DIRH&format=json&header=true&time-standard=lst";
-    
-      console.log(peti)
-      fetch(
-        peti,
-        )
-      .then(data=>data.json())
-      .then(res=>{
-        let dias:any = []
+    fetch(
+      "https://damp-beach-17296.herokuapp.com/" + "https://power.larc.nasa.gov/api/temporal/daily/point?start=" + this.year + "0101&end=" + this.year + "1231&latitude=-0.1085979&longitude=-78.4683587&community=ag&parameters=ALLSKY_SFC_SW_DIRH&format=json&header=true&time-standard=lst",
+    )
+      .then(data => data.json())
+      .then(res => {
+        let dias: any = []
         res = res.properties.parameter.ALLSKY_SFC_SW_DIRH
         let valores = Object.values(res)
         let fechas = Object.keys(res)
         let continuar = true
         let i = 0
-        while(true){
-          
-          let sub = valores.slice(i,i+7)
-          let subFechas = fechas.slice(i,i+7)
-                  
-          if(i==364){
-            for(let valor of sub){
-              this.semanas[51] += (Number(valor)/7)
+        while (true) {
+
+          let sub = valores.slice(i, i + 7)
+          let subFechas = fechas.slice(i, i + 7)
+
+          if (i == 364) {
+            for (let valor of sub) {
+              this.semanas[51] += (Number(valor) / 7)
             }
-            this.semanas[51]= Number(this.semanas[51].toFixed(2))
+            this.semanas[51] = Number(this.semanas[51].toFixed(2))
             break
           }
 
           let acumulador = 0
-          for(let valor of sub){
+          for (let valor of sub) {
             acumulador += Number(valor)
           }
           acumulador /= 7
           acumulador = Number(acumulador.toFixed(2))
           this.semanas.push(acumulador)
-          dias.push(this.getFechas(subFechas[0],subFechas[subFechas.length-1]))
+          dias.push(this.getFechas(subFechas[0], subFechas[subFechas.length - 1]))
 
-          i+=7
-          
+          i += 7
+
         }
         console.log(this.semanas)
-        dias[51] = this.getFechas("20201223","20201231")
-        /*
-        for(let dato in res){
-          console.log(dato)
-          if(this.semanas.length<52){
-            this.semanas.push(res[dato])
-            dias.push(dato)
-          }
-          
-        }
-        */
-        this.chartOptions.series=[
+        dias[51] = this.getFechas("20201223", "20201231")
+        this.chartOptions.series = [
           {
+            name: "Irradiance Average",
             data: this.semanas
           }
         ]
-        this.chartOptions.xaxis={
+        this.chartOptions.xaxis = {
           categories: dias
         }
+
       })
-   }
   }
 
-  getFechas(inicio:string,fin:string){
-    let añoI = inicio.substr(0,4)
-    let mesI = inicio.substr(4,2)
+  graficoMensual() {
+    this.chartOptions = {
+
+      series: [
+        {
+          name: "Irradiance Average",
+          data: []
+        }
+      ],
+      fill: {
+        colors: ['#07173F']
+      },
+      chart: {
+        height: 550,
+        type: "bar",
+        foreColor: '#03045e'
+      },
+      xaxis: {
+        categories: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
+      },
+      plotOptions: {
+        bar: {
+          horizontal: true,
+          columnWidth: '70%'
+        }
+      }
+
+
+    }
+
+    fetch(
+      "https://cors-anywhere.herokuapp.com/" + "https://power.larc.nasa.gov/api/temporal/monthly/point?start=2020&end=2020&latitude=-0.1085979&longitude=-78.4683587&community=ag&parameters=ALLSKY_SFC_SW_DIRH&format=json&header=true&time-standard=lst",
+    )
+      .then(data => data.json())
+      .then(res => {
+        res = res.properties.parameter.ALLSKY_SFC_SW_DIRH
+        this.chartOptions.series = [
+          {
+            data: Object.values(res)
+          }
+        ]
+        console.log(res)
+      })
+  }
+
+  getFechas(inicio: string, fin: string) {
+    let añoI = inicio.substr(0, 4)
+    let mesI = inicio.substr(4, 2)
     let diaI = inicio.substr(6)
-    let añoF = fin.substr(0,4)
-    let mesF = fin.substr(4,2)
+    let añoF = fin.substr(0, 4)
+    let mesF = fin.substr(4, 2)
     let diaF = fin.substr(6)
-    return añoI + "/" + mesI + "/" + diaI + "-" + añoF + "/" + mesF + "/" + diaF
+    return añoI + "/" + mesI + "/" + diaI
   }
 
 }

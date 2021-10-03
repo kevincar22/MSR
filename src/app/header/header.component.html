@@ -11,27 +11,13 @@
             <a class="nav-link" aria-current="page" href="home">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="graphic/weekly">Weekly Reports</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-bs-toggle="dropdown" aria-expanded="false">Monthly Reports</a>
-            <ul class="dropdown-menu" aria-labelledby="dropdown03">
-              <li><a class="dropdown-item" href="#">January</a></li>
-              <li><a class="dropdown-item" href="#">February</a></li>
-              <li><a class="dropdown-item" href="#">March</a></li>
-              <li><a class="dropdown-item" href="#">April</a></li>
-              <li><a class="dropdown-item" href="#">May</a></li>
-              <li><a class="dropdown-item" href="#">June</a></li>
-              <li><a class="dropdown-item" href="#">July</a></li>
-              <li><a class="dropdown-item" href="#">August</a></li>
-              <li><a class="dropdown-item" href="#">September</a></li>
-              <li><a class="dropdown-item" href="#">October</a></li>
-              <li><a class="dropdown-item" href="#">November</a></li>
-              <li><a class="dropdown-item" href="#">December</a></li>
-            </ul>
+            <a class="nav-link" [routerLink]="['/graphic','weekly']">Weekly Reports</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Highlights
+          <a class="nav-link" [routerLink]="['/graphic','monthly']">Monthly Reports</a>
+        </li>
+          <li class="nav-item">
+            <a class="nav-link" href="highlights">Highlights
             </a>
           </li>
         </ul>
