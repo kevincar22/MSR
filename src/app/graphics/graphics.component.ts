@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 import {
   ChartComponent,
@@ -26,7 +27,19 @@ export class GraphicsComponent {
 
   public chartOptions: Partial<any>;
 
-  constructor(){
+  constructor(private route: ActivatedRoute){
+    this.route.paramMap
+    .subscribe(params=>{
+      console.log(params)
+      if(params.get('tipo') == "weekly"){
+        this.graficoSemana()
+      }else if(params.get('tipo')=="monthly"){
+        this.graficoMensual()
+      }
+    })
+  }
+
+  graficoSemana(){
     this.chartOptions={
       
       series: [
@@ -41,7 +54,7 @@ export class GraphicsComponent {
         type: "bar"
       },
       title: {
-        text: "My First Angular Chart"
+        text: "Gráfico de datos semanales"
       },
       plotOptions: {
         bar: {
@@ -90,16 +103,6 @@ export class GraphicsComponent {
       }
       console.log(this.semanas)
       dias[51] = this.getFechas("20201223","20201231")
-      /*
-      for(let dato in res){
-        console.log(dato)
-        if(this.semanas.length<52){
-          this.semanas.push(res[dato])
-          dias.push(dato)
-        }
-        
-      }
-      */
       this.chartOptions.series=[
         {
           data: this.semanas
@@ -108,6 +111,52 @@ export class GraphicsComponent {
       this.chartOptions.xaxis={
         categories: dias
       }
+      
+    })
+  }
+
+  graficoMensual(){
+    this.chartOptions={
+      
+      series: [
+        {
+          name: "My-series",
+          data: []
+        }
+      ],
+      
+      chart: {
+        height: 550,
+        type: "bar"
+      },
+      title: {
+        text: "Gráficos de datos mensuales"
+      },
+      xaxis:{
+        categories:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+      },
+      plotOptions: {
+        bar: {
+          horizontal: true,
+          columnWidth: '70%'
+        }
+      }
+    
+      
+    }
+
+    fetch(
+      "https://cors-anywhere.herokuapp.com/"+ "https://power.larc.nasa.gov/api/temporal/monthly/point?start=2020&end=2020&latitude=-0.1085979&longitude=-78.4683587&community=ag&parameters=ALLSKY_SFC_SW_DIRH&format=json&header=true&time-standard=lst",
+    )
+    .then(data=>data.json())
+    .then(res=>{
+      res = res.properties.parameter.ALLSKY_SFC_SW_DIRH
+      this.chartOptions.series = [
+        {
+          data: Object.values(res)
+        }
+      ]
+      console.log(res)
     })
   }
 

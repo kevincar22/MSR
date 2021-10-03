@@ -5,7 +5,7 @@ import { GraphicsComponent } from './graphics/graphics.component';
 
 const routes: Routes = [
   {path:'home', component:HomeComponent},
-  {path:'graphic/weekly', component:GraphicsComponent},
+  {path:'graphic/:tipo', component:GraphicsComponent},
   {path:'**',component:HomeComponent}
 ];
 
