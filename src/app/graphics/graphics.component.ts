@@ -173,3 +173,17 @@ export class GraphicsComponent {
   }
 
 }
+
+/*
+var form: HTMLFormElement = document.querySelector('#myform');
+
+
+form.onsubmit = () => {
+  const formData = new FormData(form);
+
+  const text = formData.get('Longi') as string;
+  console.log(text);
+  return false; // prevent reload
+};*/
+
+
