@@ -8,6 +8,7 @@ import { FooterComponent } from './footer/footer.component';
 import { HomeComponent } from './home/home.component';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { GraphicsComponent } from './graphics/graphics.component';
+import { HighlightsComponent } from './highlights/highlights.component';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { GraphicsComponent } from './graphics/graphics.component';
     HeaderComponent,
     FooterComponent,
     HomeComponent,
-    GraphicsComponent
+    GraphicsComponent,
+    HighlightsComponent
   ],
   imports: [
     BrowserModule,
