@@ -40,6 +40,7 @@ export class GraphicsComponent {
   }
 
   graficoSemana(){
+    this.semanas =[]
     this.chartOptions={
       
       series: [
