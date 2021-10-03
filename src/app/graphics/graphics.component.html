@@ -1,29 +1,31 @@
 <div class="alert alert-success main" role="alert">
-    All Sky Surface Shortwave Direct Horizontal Irradiance {{period}} report {{year}}
+    All Sky Surface Shortwave Direct Horizontal Irradiance {{period}} last year report
 </div>
 
 <div class="container">
-<div><h6>Enter your location</h6></div>
+    <div>
+        <h6>Enter your location</h6>
+    </div>
     <div class="row">
-      <div class="col">
-        <div class="form-floating">
-            <input type="number" class="form-control" id="floatingInput" placeholder="-2.1482271">
-            <label for="floatingInput">latitude</label>
-        </div>
-      </div>
-      <div class="col">
+        <div class="col">
             <div class="form-floating">
-        <input type="number" class="form-control" id="floatingInput" placeholder="-79.9666812">
-        <label for="floatingPassword">longitude</label>
+                <input type="number" #latData class="form-control" id="floatingInput" placeholder="-2.1482271">
+                <label for="floatingInput">latitude</label>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-floating">
+                <input type="number" #lonData class="form-control" id="floatingInput" placeholder="-79.9666812">
+                <label for="floatingPassword">longitude</label>
+            </div>
+        </div>
+        <div class="col">
+            <button (click)="updateLatLon(latData.value,lonData.value)" type="button" class="btn">Request</button>
+        </div>
     </div>
-      </div>
-      <div class="col">
-        <button type="button" class="btn">Request</button>
-      </div>
-    </div>
-  </div>
+</div>
 
-  
+
 <div style="text-align:center">
     <button type="button" class="btn sort">Sort</button>
     <apx-chart [fill]="chartOptions.fill" [series]="chartOptions.series" [chart]="chartOptions.chart"

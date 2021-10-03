@@ -26,6 +26,18 @@ export class GraphicsComponent {
   semanas: any = []
   period: string | null
   year = new Date().getFullYear() - 1
+  lat: string = "-2.1482271";
+  lon: string = "-79.9666812";
+
+  updateLatLon(lat: string, lon: string) {
+    this.lat = lat;
+    this.lon = lon;
+    if (this.period == "weekly") {
+      this.graficoSemana(this.lat, this.lon)
+    } else if (this.period == "monthly") {
+      this.graficoMensual(this.lat, this.lon)
+    }
+  }
 
   public chartOptions: Partial<any>;
 
@@ -34,15 +46,15 @@ export class GraphicsComponent {
       .subscribe(params => {
         console.log(params)
         this.period = params.get('tipo')
-        if (params.get('tipo') == "weekly") {
-          this.graficoSemana()
-        } else if (params.get('tipo') == "monthly") {
-          this.graficoMensual()
+        if (this.period == "weekly") {
+          this.graficoSemana(this.lat, this.lon)
+        } else if (this.period == "monthly") {
+          this.graficoMensual(this.lat, this.lon)
         }
       })
   }
 
-  graficoSemana() {
+  graficoSemana(lat: string, lon: string) {
     this.semanas = []
     this.chartOptions = {
       fill: {
@@ -67,7 +79,7 @@ export class GraphicsComponent {
     }
 
     fetch(
-      "https://damp-beach-17296.herokuapp.com/" + "https://power.larc.nasa.gov/api/temporal/daily/point?start=" + this.year + "0101&end=" + this.year + "1231&latitude=-0.1085979&longitude=-78.4683587&community=ag&parameters=ALLSKY_SFC_SW_DIRH&format=json&header=true&time-standard=lst",
+      "https://damp-beach-17296.herokuapp.com/" + "https://power.larc.nasa.gov/api/temporal/daily/point?start=" + this.year + "0101&end=" + this.year + "1231&latitude=" + lat + "&longitude=" + lon + "&community=ag&parameters=ALLSKY_SFC_SW_DIRH&format=json&header=true&time-standard=lst",
     )
       .then(data => data.json())
       .then(res => {
@@ -117,7 +129,7 @@ export class GraphicsComponent {
       })
   }
 
-  graficoMensual() {
+  graficoMensual(lat: string, lon: string) {
     this.chartOptions = {
 
       series: [
@@ -148,7 +160,7 @@ export class GraphicsComponent {
     }
 
     fetch(
-      "https://cors-anywhere.herokuapp.com/" + "https://power.larc.nasa.gov/api/temporal/monthly/point?start=2020&end=2020&latitude=-0.1085979&longitude=-78.4683587&community=ag&parameters=ALLSKY_SFC_SW_DIRH&format=json&header=true&time-standard=lst",
+      "https://damp-beach-17296.herokuapp.com/" + "https://power.larc.nasa.gov/api/temporal/monthly/point?start=" + this.year + "&end=" + this.year + "&latitude="+lat+"&longitude="+lon+"&community=ag&parameters=ALLSKY_SFC_SW_DIRH&format=json&header=true&time-standard=lst",
     )
       .then(data => data.json())
       .then(res => {
