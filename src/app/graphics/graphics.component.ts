@@ -114,8 +114,10 @@ export class GraphicsComponent {
           i += 7
 
         }
+        dias[51] = this.getFechas("20201223", "20201231"),
+        console.log(dias)
         console.log(this.semanas)
-        dias[51] = this.getFechas("20201223", "20201231")
+        console.log(dias[this.semanas.indexOf(3.31)])
         this.chartOptions.series = [
           {
             name: "Irradiance Average",
@@ -170,7 +172,7 @@ export class GraphicsComponent {
             data: Object.values(res)
           }
         ]
-        console.log(res)
+        console.log()
       })
   }
 
@@ -178,9 +180,6 @@ export class GraphicsComponent {
     let añoI = inicio.substr(0, 4)
     let mesI = inicio.substr(4, 2)
     let diaI = inicio.substr(6)
-    let añoF = fin.substr(0, 4)
-    let mesF = fin.substr(4, 2)
-    let diaF = fin.substr(6)
     return añoI + "/" + mesI + "/" + diaI
   }
 
